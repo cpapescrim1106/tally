@@ -8,7 +8,7 @@ import Layout from "@/components/layout/Layout";
 import MissionHeader from "@/components/mission/MissionHeader";
 import ProjectCard from "@/components/mission/ProjectCard";
 import { useProjects } from "@/hooks/useProjects";
-import type { MissionProjectStats } from "@/types/mission";
+import type { MissionProject } from "@/types/mission";
 
 const TilesGridList = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ style, children }, ref) => (
@@ -49,7 +49,7 @@ const TilesView: NextPage = () => {
     }
   };
 
-  const renderExpandedFooter = (project: MissionProjectStats) => {
+  const renderExpandedFooter = (project: MissionProject) => {
     const activityLabel = formatDate(project.lastActivityAt) || "No activity";
     const statusLabel = project.stale ? "Stale" : project.activeCount === 0 ? "Done" : "Active";
     return (

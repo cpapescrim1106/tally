@@ -2,8 +2,8 @@ import { useMemo } from "react";
 import useSWR from "swr";
 import { addDays, differenceInCalendarDays, isAfter, isBefore, isEqual, parseISO, startOfDay, startOfWeek } from "date-fns";
 import type { ActiveTask, CompletedTask, DashboardData, TodoistColor } from "@/types";
-import type { MissionProjectStats, MissionTotals } from "@/types/mission";
-import { calculateProjectHealth } from "@/utils/projectHealth";
+import type { MissionProject, MissionTotals } from "@/types/mission";
+import { calculateHealthScore, determineStatus } from "@/utils/projectHealth";
 
 const DUE_SOON_DAYS = 7;
 const STALE_DAYS = 14;
@@ -62,7 +62,7 @@ export function useProjects() {
   const { projects, totals } = useMemo(() => {
     if (!data) {
       return {
-        projects: [] as MissionProjectStats[],
+        projects: [] as MissionProject[],
         totals: {
           activeCount: 0,
           overdueCount: 0,
@@ -140,12 +140,17 @@ export function useProjects() {
           accumulator.activeCount > 0 &&
           (!lastActivityAt || differenceInCalendarDays(new Date(), lastActivityAt) > STALE_DAYS);
 
-        const health = calculateProjectHealth({
+        const healthScore = calculateHealthScore({
           activeCount: accumulator.activeCount,
           overdueCount: accumulator.overdueCount,
           dueSoonCount: accumulator.dueSoonCount,
           completedThisWeek: accumulator.completedThisWeek,
           stale
+        });
+        const healthStatus = determineStatus({
+          score: healthScore,
+          activeCount: accumulator.activeCount,
+          completedThisWeek: accumulator.completedThisWeek
         });
 
         totalsAccumulator.activeCount += accumulator.activeCount;
@@ -168,8 +173,8 @@ export function useProjects() {
           dueSoonCount: accumulator.dueSoonCount,
           completedThisWeek: accumulator.completedThisWeek,
           completionRate,
-          healthScore: health.score,
-          healthStatus: health.status,
+          healthScore,
+          healthStatus,
           lastActivityAt: lastActivityAt ? lastActivityAt.toISOString() : null,
           stale,
           earliestDue: accumulator.earliestDue ? accumulator.earliestDue.toISOString() : null,
@@ -180,7 +185,7 @@ export function useProjects() {
             accumulator.overdueCount,
             accumulator.completedThisWeek
           )
-        } satisfies MissionProjectStats;
+        } satisfies MissionProject;
       })
       .sort((a, b) => (a.order ?? 0) - (b.order ?? 0) || a.name.localeCompare(b.name));
 

@@ -1,6 +1,6 @@
-import { MissionHealthStatus } from "@/types/mission";
+import type { MissionHealthStatus } from "@/types/mission";
 
-interface ProjectHealthInput {
+export interface ProjectHealthInput {
   activeCount: number;
   overdueCount: number;
   dueSoonCount: number;
@@ -8,23 +8,17 @@ interface ProjectHealthInput {
   stale: boolean;
 }
 
-interface ProjectHealthResult {
-  score: number;
-  status: MissionHealthStatus;
-  label: string;
-}
-
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
 
-export function calculateProjectHealth({
+export function calculateHealthScore({
   activeCount,
   overdueCount,
   dueSoonCount,
   completedThisWeek,
   stale
-}: ProjectHealthInput): ProjectHealthResult {
+}: ProjectHealthInput): number {
   if (activeCount === 0) {
-    return { score: 100, status: "done", label: "Done" };
+    return 100;
   }
 
   const overdueRate = overdueCount / activeCount;
@@ -36,19 +30,23 @@ export function calculateProjectHealth({
   if (completedThisWeek === 0) score -= 5;
   if (stale) score -= 15;
 
-  score = clamp(score, 0, 100);
+  return clamp(score, 0, 100);
+}
 
-  let status: MissionHealthStatus = "healthy";
-  if (score < 45) status = "critical";
-  else if (score < 75) status = "watch";
+export function determineStatus({
+  score,
+  activeCount,
+  completedThisWeek
+}: {
+  score: number;
+  activeCount: number;
+  completedThisWeek: number;
+}): MissionHealthStatus {
+  if (activeCount === 0) {
+    return completedThisWeek > 0 ? "done" : "idle";
+  }
 
-  const labelMap: Record<MissionHealthStatus, string> = {
-    healthy: "Healthy",
-    watch: "Watch",
-    critical: "Critical",
-    done: "Done",
-    idle: "Idle"
-  };
-
-  return { score, status, label: labelMap[status] };
+  if (score < 45) return "critical";
+  if (score < 75) return "watch";
+  return "healthy";
 }

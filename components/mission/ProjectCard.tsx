@@ -1,12 +1,12 @@
 import React from "react";
 import { format, parseISO } from "date-fns";
-import type { MissionProjectStats } from "@/types/mission";
+import type { MissionProject } from "@/types/mission";
 import { colorNameToHex } from "@/utils/projectUtils";
 import HealthBadge from "./HealthBadge";
 import ProgressBar from "./ProgressBar";
 
 interface ProjectCardProps {
-  project: MissionProjectStats;
+  project: MissionProject;
   compact?: boolean;
   onClick?: () => void;
   footer?: React.ReactNode;

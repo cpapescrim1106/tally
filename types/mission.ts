@@ -1,4 +1,4 @@
-import { TodoistColor } from "./index";
+import type { TodoistColor } from "./index";
 
 export type MissionHealthStatus = "healthy" | "watch" | "critical" | "done" | "idle";
 
@@ -6,7 +6,7 @@ export type MissionKanbanStatus = "backlog" | "in_progress" | "blocked" | "done"
 
 export type MissionView = "kanban" | "timeline" | "tiles" | "matrix";
 
-export interface MissionProjectStats {
+export interface MissionProject {
   id: string;
   name: string;
   color: TodoistColor | null;
@@ -26,6 +26,8 @@ export interface MissionProjectStats {
   nextDue: string | null;
   defaultStatus: MissionKanbanStatus;
 }
+
+export type MissionProjectStats = MissionProject;
 
 export interface MissionTotals {
   activeCount: number;

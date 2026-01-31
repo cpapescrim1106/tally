@@ -9,7 +9,7 @@ import MissionHeader from "@/components/mission/MissionHeader";
 import HealthBadge from "@/components/mission/HealthBadge";
 import ProgressBar from "@/components/mission/ProgressBar";
 import { useProjects } from "@/hooks/useProjects";
-import type { MissionHealthStatus, MissionProjectStats } from "@/types/mission";
+import type { MissionHealthStatus, MissionProject } from "@/types/mission";
 
 type SortKey = "name" | "tasks" | "done" | "overdue" | "health" | "due";
 
@@ -32,7 +32,7 @@ const MatrixView: NextPage = () => {
     const sortedProjects = [...filtered];
     const multiplier = direction === "asc" ? 1 : -1;
     sortedProjects.sort((a, b) => {
-      const getValue = (project: MissionProjectStats) => {
+      const getValue = (project: MissionProject) => {
         switch (sortKey) {
           case "tasks":
             return project.activeCount;
@@ -74,7 +74,7 @@ const MatrixView: NextPage = () => {
     }
   };
 
-  const formatDue = (project: MissionProjectStats) => {
+  const formatDue = (project: MissionProject) => {
     if (project.overdueCount > 0) return "Overdue";
     if (!project.nextDue) return "—";
     try {

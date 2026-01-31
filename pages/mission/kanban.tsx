@@ -7,7 +7,7 @@ import Layout from "@/components/layout/Layout";
 import MissionHeader from "@/components/mission/MissionHeader";
 import HealthBadge from "@/components/mission/HealthBadge";
 import { useProjects } from "@/hooks/useProjects";
-import type { MissionKanbanStatus, MissionProjectStats } from "@/types/mission";
+import type { MissionKanbanStatus, MissionProject } from "@/types/mission";
 
 const STORAGE_KEY = "tally_mission_kanban_status";
 
@@ -68,7 +68,7 @@ const KanbanView: NextPage = () => {
   };
 
   const grouped = useMemo(() => {
-    const initial: Record<MissionKanbanStatus, MissionProjectStats[]> = {
+    const initial: Record<MissionKanbanStatus, MissionProject[]> = {
       backlog: [],
       in_progress: [],
       blocked: [],
