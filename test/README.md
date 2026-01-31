@@ -4,7 +4,7 @@ This directory contains Python scripts for generating realistic dummy Todoist da
 
 ## Overview
 
-Testing the Todoist Dashboard requires substantial task completion history. The generators in this directory create realistic datasets that simulate real-world usage patterns.
+Testing Tally requires substantial task completion history. The generators in this directory create realistic datasets that simulate real-world usage patterns.
 
 ## Available Generators
 
@@ -68,6 +68,7 @@ Generates `test/data/dummy-dataset.json` with the following structure:
 {
   "allCompletedTasks": [...],
   "projectData": [...],
+  "sections": [...],
   "activeTasks": [...],
   "totalCompletedTasks": 1500,
   "hasMoreTasks": false,
@@ -113,9 +114,9 @@ python generate_full_dataset.py --projects 6 --active-tasks 75 --completed-tasks
 
 ### Step 2: Enable Fake Data Mode
 
-Edit `pages/api/getTasks.ts`:
-```typescript
-const USE_DUMMY_DATA = true;  // Toggle this and adjust path to data!
+Set `USE_DUMMY_DATA=true` in `.env.local`:
+```env
+USE_DUMMY_DATA=true
 ```
 
 ### Step 3: Start Development Server
@@ -130,8 +131,8 @@ The dashboard will now use dummy data instead of the Todoist API.
 
 When you're ready to use real data again:
 
-```typescript
-const USE_DUMMY_DATA = false;
+```env
+USE_DUMMY_DATA=false
 ```
 
 ## What Gets Tested

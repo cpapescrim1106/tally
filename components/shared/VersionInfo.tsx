@@ -2,10 +2,20 @@ import React, { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 
 // Current version number
-const APP_VERSION = '0.10.2';
+const APP_VERSION = '1.0.0';
 
 // Changelog entries - newest first
 const CHANGELOG = [
+  {
+    version: '1.0.0',
+    date: 'February 2026',
+    changes: [
+      'Rebranded to Tally with refreshed navigation and metadata',
+      'Added Mission Control views: Kanban, Timeline, Tiles, and Matrix',
+      'Introduced project health scoring, velocity, and stale indicators',
+      'Added Docker build support and deployment-ready assets',
+    ]
+  },
   {
     version: '0.10.2',
     date: 'December 2025',
@@ -92,7 +102,7 @@ const CHANGELOG = [
     version: '0.1.0',
     date: 'December 2024',
     changes: [
-      'Initial beta release of Todoist Dashboard',
+      'Initial beta release of the original dashboard',
       'Task completion patterns by time of day',
       'Productivity trends and scoring',
       'Project distribution analysis',

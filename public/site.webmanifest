@@ -1,7 +1,7 @@
 {
-  "name": "Todoist Dashboard",
-  "short_name": "Todoist Dashboard",
-  "description": "Advanced analytics and insights for Todoist",
+  "name": "Tally",
+  "short_name": "Tally",
+  "description": "Tally - Your Todoist Command Center",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",

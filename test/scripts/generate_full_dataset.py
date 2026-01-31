@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Comprehensive Todoist Test Data Generator
+Comprehensive Tally Test Data Generator
 
-Generates realistic dummy data for testing the Todoist Dashboard including:
+Generates realistic dummy data for testing Tally including:
 - Multiple projects with varied colors
 - Active tasks (mix of priorities, due dates, ages)
 - Completed tasks with realistic patterns (time of day, day of week, project focus)
@@ -29,6 +29,14 @@ PROJECT_TEMPLATES = [
     {"name": "Home", "color": "yellow"},
     {"name": "Finance", "color": "charcoal"},
     {"name": "Social", "color": "mint_green"},
+]
+
+SECTION_TEMPLATES = [
+    "Backlog",
+    "Next",
+    "In Progress",
+    "Blocked",
+    "Done"
 ]
 
 # Realistic task content templates
@@ -167,7 +175,7 @@ LABEL_TEMPLATES = [
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Generate comprehensive test data for Todoist Dashboard")
+    parser = argparse.ArgumentParser(description="Generate comprehensive test data for Tally")
     parser.add_argument("--projects", type=int, default=6, help="Number of projects to generate")
     parser.add_argument("--active-tasks", type=int, default=75, help="Number of active tasks")
     parser.add_argument("--completed-tasks", type=int, default=1500, help="Number of completed tasks")
@@ -214,6 +222,22 @@ def generate_labels(num_labels: int = None) -> List[Dict]:
         })
 
     return labels
+
+
+def generate_sections(projects: List[Dict]) -> List[Dict]:
+    """Generate basic sections for each project"""
+    sections = []
+    for project in projects:
+        section_count = random.randint(0, 3)
+        for index in range(section_count):
+            section_name = random.choice(SECTION_TEMPLATES)
+            sections.append({
+                "id": f"{project['id']}-section-{index}",
+                "projectId": project["id"],
+                "name": section_name,
+                "order": index
+            })
+    return sections
 
 
 def generate_projects(num_projects: int) -> List[Dict]:
@@ -564,6 +588,11 @@ def main():
     print("Generating projects...")
     projects = generate_projects(args.projects)
 
+    # Generate sections
+    print("Generating sections...")
+    sections = generate_sections(projects)
+    print(f"   - Generated {len(sections)} sections")
+
     # Generate labels
     print("Generating labels...")
     labels = generate_labels()
@@ -591,6 +620,7 @@ def main():
     dataset = {
         "allCompletedTasks": completed_tasks,
         "projectData": projects,
+        "sections": sections,
         "activeTasks": active_tasks,
         "labels": labels,
         "totalCompletedTasks": len(completed_tasks),
@@ -606,6 +636,7 @@ def main():
     print(f"\nSuccessfully generated test dataset!")
     print(f"\nSummary:")
     print(f"   - Projects: {len(projects)}")
+    print(f"   - Sections: {len(sections)}")
     print(f"   - Labels: {len(labels)}")
     print(f"   - Active tasks: {len(active_tasks)}")
     print(f"   - Completed tasks: {len(completed_tasks)}")

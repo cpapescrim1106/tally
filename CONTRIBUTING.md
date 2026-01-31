@@ -1,6 +1,6 @@
-# Contributing to Todoist Dashboard
+# Contributing to Tally
 
-First off, thank you for considering contributing to Todoist Dashboard! It's people like you that make this tool better for everyone.
+First off, thank you for considering contributing to Tally! It's people like you that make this tool better for everyone.
 
 ## How Can I Contribute?
 
@@ -15,7 +15,7 @@ If you find a bug, please create an issue with the following information:
 
 ### Suggesting Enhancements
 
-Have an idea to make Todoist Dashboard better? Create an issue with:
+Have an idea to make Tally better? Create an issue with:
 - A clear description of your suggestion
 - Why you think it would be useful
 - Any examples of similar features in other apps
@@ -31,7 +31,7 @@ Have an idea to make Todoist Dashboard better? Create an issue with:
 
 #### Development Setup
 
-1. Make sure you have Node.js 16.x or later installed
+1. Make sure you have Node.js 18.x or later installed
 2. Clone your fork of the repository
 3. Install dependencies with `npm install` or `yarn install`
 4. Create a `.env.local` file with the required environment variables

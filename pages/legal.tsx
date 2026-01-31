@@ -7,7 +7,7 @@ import Layout from '@/components/layout/Layout';
 const Legal: NextPage = () => {
 
   return (
-    <Layout title="Legal | Todoist Dashboard" description="Privacy Policy and Terms of Use for Todoist Dashboard">
+    <Layout title="Legal | Tally" description="Privacy Policy and Terms of Use for Tally">
       <div className="max-w-3xl mx-auto py-8">
         <Link
           href="/"
@@ -20,10 +20,10 @@ const Legal: NextPage = () => {
         <span className="text-sm text-warm-gray">Last updated: 2/13/2025</span>
 
         <section className="my-12">
-          <h2 className="text-xl font-semibold mb-4">About Todoist Dashboard</h2>
+          <h2 className="text-xl font-semibold mb-4">About Tally</h2>
           <p className="mb-4">
-            I created Todoist Dashboard as a free, open-source tool to provide visual analytics and insights for Todoist tasks.
-            My goal is to help you understand your productivity patterns and task completion trends through interactive charts and statistics.
+            I created Tally as a free, open-source command center for Todoist that provides visual analytics, mission control views, and productivity insights.
+            My goal is to help you understand your productivity patterns and task completion trends through interactive charts and clear status signals.
           </p>
         </section>
 
@@ -35,7 +35,7 @@ const Legal: NextPage = () => {
             </p>
             <ul className="list-disc pl-5 space-y-2">
               <li>
-                <strong>Data Access with Permission:</strong> Todoist Dashboard accesses your Todoist data only with your explicit permission through OAuth authentication.
+                <strong>Data Access with Permission:</strong> Tally accesses your Todoist data only with your explicit permission through OAuth authentication.
               </li>
               <li>
                 <strong>Server-Side Data Processing:</strong> The application fetches and processes your Todoist data on the server to provide dashboard functionalities, such as generating visual analytics and insights.
@@ -50,7 +50,7 @@ const Legal: NextPage = () => {
                 <strong>No Third-Party Tracking:</strong> No third-party integrations or tracking technologies are used. The only cookies used are those essential for secure authentication and session management.
               </li>
               <li>
-                <strong>Open Source Transparency:</strong> Todoist Dashboard is an open-source project; its codebase is publicly available for transparency and trust.
+                <strong>Open Source Transparency:</strong> Tally is an open-source project; its codebase is publicly available for transparency and trust.
               </li>
             </ul>
           </div>
@@ -60,12 +60,12 @@ const Legal: NextPage = () => {
           <h2 className="text-xl font-semibold mb-4">Analytics</h2>
           <div className="space-y-4">
             <p>
-              I use Umami Analytics to track general user interactions on this site.
+              I may use privacy-friendly analytics to understand feature usage and improve the product experience.
               This data is anonymous and does not collect or store personally identifiable information of any kind.
-              The information gathered helps me understand website usage patterns to improve the user experience.
+              The information gathered helps me understand aggregate usage patterns to improve the user experience.
             </p>
             <p>
-              Umami Analytics tracks data such as:
+              Privacy-friendly analytics may include data such as:
             </p>
             <ul className="list-disc pl-5 space-y-2">
               <li>Page views and visited URLs</li>
@@ -75,7 +75,7 @@ const Legal: NextPage = () => {
               <li>Geographical location (at the country level)</li>
             </ul>
             <p>
-              Umami Analytics does not use cookies to collect personal data, and I do not, and will never, share any data collected with third parties.
+              Analytics do not use cookies to collect personal data, and I do not, and will never, share any data collected with third parties.
             </p>
           </div>
         </section>
@@ -84,22 +84,22 @@ const Legal: NextPage = () => {
         <section className="mb-12">
           <h2 className="text-xl font-semibold mb-4">Terms of Use</h2>
           <div className="space-y-4">
-            <p>By using Todoist Dashboard, you agree to the following terms:</p>
+            <p>By using Tally, you agree to the following terms:</p>
             <ul className="list-disc pl-5 space-y-2">
               <li>
                 The service is provided &quot;as is&quot; without any warranties, express or implied, including suitability for a specific purpose or non-infringement.
               </li>
               <li>
-                Todoist Dashboard is a personal, open-source project and isn&apos;t affiliated with, sponsored by, or endorsed by Todoist or Doist.
+                Tally is a personal, open-source project and isn&apos;t affiliated with, sponsored by, or endorsed by Todoist or Doist.
               </li>
               <li>
                 I reserve the right to modify, suspend, or discontinue the service at any time without prior notice.
               </li>
               <li>
-                You are responsible for using Todoist Dashboard securely. The app handles your Todoist access token automatically on the server side; no action is required from you. However, avoid sharing access to your device or browser with untrusted parties.
+                You are responsible for using Tally securely. The app handles your Todoist access token automatically on the server side; no action is required from you. However, avoid sharing access to your device or browser with untrusted parties.
               </li>
               <li>
-                By using Todoist Dashboard, you agree to comply with Doist&apos;s{' '}
+                By using Tally, you agree to comply with Doist&apos;s{' '}
                 <a
                   href="https://doist.com/terms-of-service"
                   target="_blank"
@@ -121,11 +121,11 @@ const Legal: NextPage = () => {
         <section className="mb-12">
           <h2 className="text-xl font-semibold mb-4">License</h2>
           <p className="mb-4">
-            Todoist Dashboard is released under the MIT License. You are free to use, modify, and distribute this software in accordance with the terms of the license.
+            Tally is released under the MIT License. You are free to use, modify, and distribute this software in accordance with the terms of the license.
           </p>
           <p className="mb-4">
             <a
-              href="https://github.com/uncazzy/todoist-dashboard/blob/main/LICENSE"
+              href="https://github.com/cpapescrim1106/tally/blob/main/LICENSE"
               target="_blank"
               rel="noopener noreferrer"
               className="text-warm-peach hover:opacity-80"
@@ -140,7 +140,7 @@ const Legal: NextPage = () => {
           <p>
             If you have any questions, feedback, or concerns about this privacy policy or the service, feel free to{' '}
             <a
-              href="mailto:todoist-dashboard@azzy.cloud"
+              href="https://github.com/cpapescrim1106/tally/issues"
               className="text-warm-peach hover:opacity-80"
             >
               contact me

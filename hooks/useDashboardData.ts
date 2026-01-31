@@ -9,6 +9,7 @@ function isValidDashboardData(data: unknown): data is DashboardData {
   return (
     Array.isArray(d.allCompletedTasks) &&
     Array.isArray(d.projectData) &&
+    Array.isArray(d.sections) &&
     typeof d.totalCompletedTasks === 'number' &&
     typeof d.hasMoreTasks === 'boolean'
   );

@@ -8,8 +8,8 @@ import Layout from "@/components/layout/Layout";
 import { trackNavigation } from "@/utils/analytics";
 
 export const metadata = {
-  title: "Sign In | Todoist Dashboard",
-  description: "Sign in with your Todoist account to continue"
+  title: "Sign In | Tally",
+  description: "Sign in to Tally with your Todoist account"
 };
 
 const FeatureCard = ({ icon: Icon, title, description }: { icon: any; title: string; description: string }) => (
@@ -86,7 +86,7 @@ const SignIn: NextPage = () => {
                 Welcome Back
               </h2>
               <p className="mt-2 text-sm text-warm-gray">
-                Sign in with your Todoist account to continue
+                Sign in to Tally with your Todoist account to continue
               </p>
             </div>
 
@@ -112,10 +112,10 @@ const SignIn: NextPage = () => {
           <div>
             <div className="mb-12">
               <h1 className="text-2xl font-bold text-white mb-3">
-                Todoist Dashboard
+                Tally
               </h1>
               <p className="text-warm-gray leading-relaxed">
-                Transform your Todoist experience with powerful analytics and insights. Track your productivity, visualize patterns, and optimize your task management workflow.
+                Tally is your Todoist command center with analytics, mission control views, and productivity insights built to keep you focused.
               </p>
             </div>
 

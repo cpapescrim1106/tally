@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSession } from 'next-auth/react';
-import Script from 'next/script';
 import Head from 'next/head';
 import Header from './Header';
 import Footer from './Footer';
@@ -13,8 +12,8 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({
   children,
-  title = "Todoist Dashboard",
-  description = "Advanced reports for your Todoist tasks"
+  title = "Tally",
+  description = "Tally - Your Todoist Command Center"
 }) => {
   const { data: session } = useSession();
 
@@ -26,6 +25,16 @@ const Layout: React.FC<LayoutProps> = ({
           name="description"
           content={description}
         />
+        <meta name="application-name" content="Tally" />
+        <meta property="og:site_name" content="Tally" />
+        <meta property="og:title" content={title} />
+        <meta property="og:description" content={description} />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="/og-image.svg" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content="/og-image.svg" />
         {/* Favicons */}
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -38,8 +47,6 @@ const Layout: React.FC<LayoutProps> = ({
         <meta name="theme-color" content="#FF9B71" />
         <meta name="msapplication-TileColor" content="#0D0D0D" />
       </Head>
-      
-      <Script defer src="https://umami.azzy.cloud/cigla" data-website-id="6ff90a46-6939-4991-8838-dbb953d94a60" />
 
       <div className="min-h-screen flex flex-col text-white">
         <Header user={session?.user || null} />

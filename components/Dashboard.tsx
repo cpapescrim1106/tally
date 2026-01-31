@@ -143,7 +143,7 @@ export default function Dashboard(): JSX.Element {
 
   if (status !== 'authenticated') {
     return (
-      <Layout title="Dashboard | Todoist Dashboard" description="View your Todoist analytics and insights">
+      <Layout title="Dashboard | Tally" description="View your Todoist analytics and insights in Tally">
         <div className="p-6 bg-warm-card border border-warm-border rounded-2xl">
           <p className="text-warm-gray">Please sign in to view your dashboard.</p>
         </div>
@@ -153,7 +153,7 @@ export default function Dashboard(): JSX.Element {
 
   if (isLoading && (!loadingProgress || loadingProgress.total === 0)) {
     return (
-      <Layout title="Dashboard | Todoist Dashboard" description="View your Todoist analytics and insights">
+      <Layout title="Dashboard | Tally" description="View your Todoist analytics and insights in Tally">
         <div className="flex items-center justify-center min-h-[80vh]">
           <div className="text-center">
             <h2 className="text-2xl font-semibold mb-4">Loading your dashboard...</h2>
@@ -174,7 +174,7 @@ export default function Dashboard(): JSX.Element {
 
   if (error) {
     return (
-      <Layout title="Dashboard | Todoist Dashboard" description="View your Todoist analytics and insights">
+      <Layout title="Dashboard | Tally" description="View your Todoist analytics and insights in Tally">
         <div className="p-6 bg-warm-peach/10 border border-warm-peach/30 rounded-lg">
           <h3 className="text-xl font-semibold text-warm-peach mb-2">Error Loading Dashboard</h3>
           <p className="text-warm-gray mb-4">{error}</p>
@@ -191,7 +191,7 @@ export default function Dashboard(): JSX.Element {
 
   if (!data) {
     return (
-      <Layout title="Dashboard | Todoist Dashboard" description="View your Todoist analytics and insights">
+      <Layout title="Dashboard | Tally" description="View your Todoist analytics and insights in Tally">
         <div className="p-6 bg-warm-card border border-warm-border rounded-2xl">
           <p className="text-warm-gray">No data available. Please check your Todoist connection.</p>
         </div>
@@ -200,7 +200,7 @@ export default function Dashboard(): JSX.Element {
   }
 
   return (
-    <Layout title="Dashboard | Todoist Dashboard" description="View your Todoist analytics and insights">
+    <Layout title="Dashboard | Tally" description="View your Todoist analytics and insights in Tally">
       <div className="min-h-screen bg-warm-black">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8 max-w-7xl">
           <header className="mb-10">
@@ -208,9 +208,9 @@ export default function Dashboard(): JSX.Element {
               <div>
                 <h1 className="text-4xl font-bold text-white mb-2 flex items-center gap-3">
                   <SiTodoist className="text-warm-peach" />
-                  Todoist Dashboard
+                  Tally
                 </h1>
-                <p className="text-warm-gray text-sm">Your productivity at a glance</p>
+                <p className="text-warm-gray text-sm">Tally - Your Todoist Command Center</p>
               </div>
               {/* Desktop Controls - hidden on mobile */}
               <div className="hidden sm:flex sm:flex-row sm:flex-wrap sm:items-center gap-3 sm:gap-4 w-full sm:w-auto">

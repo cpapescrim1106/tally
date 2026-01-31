@@ -34,7 +34,7 @@ const RecurringTasksPage = () => {
   }
 
   return (
-    <Layout title="Recurring Tasks | Todoist Dashboard" description="Track and manage your recurring tasks and habits">
+    <Layout title="Recurring Tasks | Tally" description="Track and manage your recurring tasks and habits in Tally">
       <div className="min-h-screen bg-warm-black">
         <div className="container mx-auto px-6 py-8 max-w-7xl">
           <header className="mb-8">
@@ -68,7 +68,7 @@ const RecurringTasksPage = () => {
                           Please report any inconsistencies or issues you encounter.
                         </p>
                         <a
-                          href="mailto:todoist-dashboard@azzy.cloud?subject=Todoist%20Dashboard%20Feedback"
+                          href="https://github.com/cpapescrim1106/tally/issues"
                           target="_blank"
                           rel="noopener noreferrer"
                           className="block text-warm-peach hover:text-warm-peach/80 underline text-sm font-medium"

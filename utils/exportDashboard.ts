@@ -127,9 +127,9 @@ export async function exportDashboard(
     const timestamp = format(new Date(), 'yyyy-MM-dd HH:mm');
     const timestampFilename = format(new Date(), 'yyyy-MM-dd-HHmm');
 
-    const htmlContent = buildHtmlDocument('Todoist Dashboard Export', styles, bodyContent, timestamp);
+    const htmlContent = buildHtmlDocument('Tally Export', styles, bodyContent, timestamp);
 
-    downloadHtml(htmlContent, `todoist-dashboard-${timestampFilename}.html`);
+    downloadHtml(htmlContent, `tally-${timestampFilename}.html`);
 
     if (onProgress) {
       onProgress({

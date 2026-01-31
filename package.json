@@ -1,11 +1,13 @@
 {
-  "name": "todoist-dashboard",
-  "version": "0.10.2",
+  "name": "tally",
+  "version": "1.0.0",
+  "description": "Tally - Your Todoist Command Center",
   "private": false,
   "license": "MIT",
+  "author": "Chris Pape",
   "repository": {
     "type": "git",
-    "url": "https://github.com/uncazzy/todoist-dashboard.git"
+    "url": "https://github.com/cpapescrim1106/tally.git"
   },
   "scripts": {
     "dev": "next dev",
@@ -35,14 +37,14 @@
     "prisma": "^5.0.0",
     "query-string": "^8.1.0",
     "react": "18.2.0",
-    "react-beautiful-dnd": "^13.1.1",
     "react-datepicker": "^8.9.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.10.1",
     "react-markdown": "^8.0.7",
     "react-sparklines": "^1.7.0",
     "react-tooltip": "^5.28.0",
-    "react-virtuoso": "^4.12.3"
+    "react-virtuoso": "^4.12.3",
+    "swr": "^2.2.5"
   },
   "devDependencies": {
     "@types/node": "^22.10.1",

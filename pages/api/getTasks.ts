@@ -13,14 +13,16 @@ import type {
   ErrorResponse,
   DashboardData,
   ActiveTask,
-  ProjectData
+  ProjectData,
+  SectionData
 } from '../../types';
 
 // Toggle dummy data testing via env flag to avoid bundling local fixtures in prod
 const USE_DUMMY_DATA = process.env.USE_DUMMY_DATA === 'true';
 
-interface ApiResponse extends Omit<DashboardData, 'projectData'> {
+interface ApiResponse extends Omit<DashboardData, 'projectData' | 'sections'> {
   projectData: ProjectData[];
+  sections: SectionData[];
 }
 
 // Custom error classes for better error handling
@@ -207,11 +209,12 @@ export default async function handler(
     const userData = await userResponse.json() as TodoistUser;
 
     // Fetch other required data
-    const [totalCount, projects, tasks, labels] = await Promise.all([
+    const [totalCount, projects, tasks, labels, sections] = await Promise.all([
       getTotalTaskCount(accessToken),
       api.getProjects(),
       api.getTasks(),
-      api.getLabels()
+      api.getLabels(),
+      api.getSections()
     ]);
 
     const initialTasks = await fetchCompletedTasksBatch(accessToken, 0, INITIAL_BATCH_SIZE);
@@ -222,9 +225,17 @@ export default async function handler(
     // Map active tasks to our internal format
     const activeTasks = tasks.map(mapToActiveTask);
 
+    const sectionData: SectionData[] = sections.map((section) => ({
+      id: section.id,
+      projectId: section.projectId,
+      name: section.name,
+      order: section.order ?? 0
+    }));
+
     const responseData: ApiResponse = {
       allCompletedTasks: initialTasks,
       projectData,
+      sections: sectionData,
       activeTasks,
       labels,
       totalCompletedTasks: totalCount,

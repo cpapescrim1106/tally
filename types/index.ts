@@ -54,6 +54,13 @@ export interface ProjectData extends Omit<TodoistProject, 'parent_id'> {
   parentId: string | null;
 }
 
+export interface SectionData {
+  id: string;
+  projectId: string;
+  name: string;
+  order: number;
+}
+
 export interface DashboardData {
   activeTasks: ActiveTask[];
   allCompletedTasks: CompletedTask[];
@@ -64,6 +71,7 @@ export interface DashboardData {
   dailyGoal: number;
   weeklyGoal: number;
   projectData: ProjectData[];
+  sections: SectionData[];
   labels: Label[];
   totalCompletedTasks: number;
   loadError?: {
