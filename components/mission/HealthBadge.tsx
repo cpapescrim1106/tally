@@ -5,6 +5,7 @@ interface HealthBadgeProps {
   status: MissionHealthStatus;
   score?: number;
   showScore?: boolean;
+  className?: string;
 }
 
 const statusStyles: Record<MissionHealthStatus, { label: string; className: string; dot: string }> = {
@@ -35,10 +36,17 @@ const statusStyles: Record<MissionHealthStatus, { label: string; className: stri
   }
 };
 
-const HealthBadge: React.FC<HealthBadgeProps> = ({ status, score, showScore = false }) => {
+const HealthBadge: React.FC<HealthBadgeProps> = ({ status, score, showScore = false, className }) => {
   const style = statusStyles[status];
+  const scoreLabel = showScore && typeof score === "number" ? ` ${Math.round(score)}%` : "";
+  const ariaLabel = `Health: ${style.label}${scoreLabel}`;
   return (
-    <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold ${style.className}`}>
+    <span
+      className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-semibold ${style.className} ${
+        className || ""
+      }`}
+      aria-label={ariaLabel}
+    >
       <span className={`h-2 w-2 rounded-full ${style.dot}`} />
       {style.label}
       {showScore && typeof score === "number" && (

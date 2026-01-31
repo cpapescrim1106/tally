@@ -25,6 +25,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, compact = false, onC
   const borderColor = colorNameToHex(project.color, "55") || undefined;
   const accentColor = colorNameToHex(project.color) || undefined;
   const dueLabel = formatDate(project.nextDue) || "No due dates";
+  const showProgressDetails = !compact;
 
   return (
     <div
@@ -46,12 +47,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, compact = false, onC
         <ProgressBar
           value={project.completionRate}
           {...(accentColor ? { fillColor: accentColor } : {})}
-          {...(compact ? {} : { label: "This week" })}
+          {...(showProgressDetails ? { label: "This week", showValue: true } : { showValue: false })}
         />
         <div className="mt-3 grid grid-cols-3 gap-3 text-xs text-warm-gray">
           <div>
             <div className="text-white font-semibold">{project.activeCount}</div>
-            Active
+            Tasks
           </div>
           <div>
             <div className="text-white font-semibold">{project.overdueCount}</div>
