@@ -49,7 +49,7 @@ const getDueDate = (task: ActiveTask) => parseDate(task.due?.datetime || task.du
 
 const deriveDefaultStatus = (activeCount: number, overdueCount: number, completedThisWeek: number) => {
   if (activeCount === 0) return "done";
-  if (overdueCount > 0) return "blocked";
+  if (overdueCount > 0) return "in_progress";
   if (completedThisWeek > 0) return "in_progress";
   return "backlog";
 };

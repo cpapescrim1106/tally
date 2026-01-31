@@ -2,7 +2,7 @@ import type { TodoistColor } from "./index";
 
 export type MissionHealthStatus = "healthy" | "watch" | "critical" | "done" | "idle";
 
-export type MissionKanbanStatus = "backlog" | "in_progress" | "blocked" | "done";
+export type MissionKanbanStatus = "backlog" | "in_progress" | "done";
 
 export type MissionView = "kanban" | "timeline" | "tiles" | "matrix";
 

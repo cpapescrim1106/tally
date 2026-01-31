@@ -13,8 +13,7 @@ const STORAGE_KEY = "tally_mission_kanban_status";
 
 const columns: { key: MissionKanbanStatus; title: string; description: string }[] = [
   { key: "backlog", title: "Backlog", description: "No recent momentum yet" },
-  { key: "in_progress", title: "In Progress", description: "Active this week" },
-  { key: "blocked", title: "Blocked", description: "Overdue or stuck" },
+  { key: "in_progress", title: "In Progress", description: "Active or overdue tasks" },
   { key: "done", title: "Done", description: "No active tasks" }
 ];
 
@@ -25,6 +24,16 @@ const formatDate = (value: string | null) => {
   } catch {
     return "No activity";
   }
+};
+
+const normalizeStatus = (value: unknown): MissionKanbanStatus | null => {
+  if (value === "backlog" || value === "in_progress" || value === "done") {
+    return value;
+  }
+  if (value === "blocked") {
+    return "in_progress";
+  }
+  return null;
 };
 
 const KanbanView: NextPage = () => {
@@ -39,7 +48,15 @@ const KanbanView: NextPage = () => {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
       try {
-        setOverrides(JSON.parse(stored) as Record<string, MissionKanbanStatus>);
+        const parsed = JSON.parse(stored) as Record<string, unknown>;
+        const next: Record<string, MissionKanbanStatus> = {};
+        Object.entries(parsed).forEach(([projectId, value]) => {
+          const normalized = normalizeStatus(value);
+          if (normalized) {
+            next[projectId] = normalized;
+          }
+        });
+        setOverrides(next);
       } catch {
         setOverrides({});
       }
@@ -71,7 +88,6 @@ const KanbanView: NextPage = () => {
     const initial: Record<MissionKanbanStatus, MissionProject[]> = {
       backlog: [],
       in_progress: [],
-      blocked: [],
       done: []
     };
 
@@ -109,13 +125,13 @@ const KanbanView: NextPage = () => {
           )}
 
           {isLoading ? (
-            <div className="grid gap-4 lg:grid-cols-4">
+            <div className="grid gap-4 lg:grid-cols-3">
               {columns.map((column) => (
                 <div key={column.key} className="h-96 rounded-2xl border border-warm-border bg-warm-card animate-pulse" />
               ))}
             </div>
           ) : (
-            <div className="grid gap-4 lg:grid-cols-4">
+            <div className="grid gap-4 lg:grid-cols-3">
               {columns.map((column) => (
                 <div
                   key={column.key}
@@ -129,9 +145,14 @@ const KanbanView: NextPage = () => {
                     }
                   }}
                 >
-                  <div className="mb-4">
-                    <h3 className="text-lg font-semibold text-white">{column.title}</h3>
-                    <p className="text-xs text-warm-gray">{column.description}</p>
+                  <div className="mb-4 flex items-start justify-between gap-3">
+                    <div>
+                      <h3 className="text-lg font-semibold text-white">{column.title}</h3>
+                      <p className="text-xs text-warm-gray">{column.description}</p>
+                    </div>
+                    <span className="rounded-full border border-warm-border px-2.5 py-1 text-xs text-warm-gray">
+                      {grouped[column.key].length}
+                    </span>
                   </div>
                   <div className="space-y-3">
                     {grouped[column.key].map((project) => {
