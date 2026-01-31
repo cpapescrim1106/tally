@@ -1,18 +1,18 @@
 # Build Complete
 
 ## What I built
-- Verified Tally rebrand and Mission Control views
-- Added expandable details for Mission Control tiles
-- Removed unused drag-and-drop dependency
+- Rebranded UI copy and metadata to Tally
+- Updated footer attribution and README branding copy
+- Refreshed manifest and OG image tagline
 
 ## Docker build result
-- `docker build -t tally:test .` — success
+- Success (docker build -t tally:test .)
 
 ## How to run locally
-1. `npm install`
-2. Create `.env.local` with Todoist OAuth + NextAuth credentials (see `README.md`)
-3. `npm run dev`
+1. npm install
+2. npm run dev
+3. Open http://localhost:3000
 
 Docker:
-- `docker build -t tally:test .`
-- `docker run -p 3000:3000 --env-file .env.local tally:test`
+- docker build -t tally:test .
+- docker run -p 3000:3000 --env-file .env.local tally:test
