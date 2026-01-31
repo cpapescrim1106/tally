@@ -1,19 +1,11 @@
-# Build Complete
+**Summary**
+- Updated package description and default metadata to the Tally tagline. `package.json:4` `components/layout/Layout.tsx:13`
+- Refreshed header/footer/dashboard and sign-in branding copy for Tally. `components/layout/Header.tsx:40` `components/layout/Footer.tsx:11` `components/Dashboard.tsx:203` `pages/sign-in.tsx:10`
+- Updated README + public metadata assets and refreshed build completion notes. `README.md:1` `README.md:121` `public/site.webmanifest:4` `public/og-image.svg:12` `BUILD_COMPLETE.md:1`
 
-## What I built
-- Rebranded Tally identity, metadata, and assets
-- Implemented Mission Control views (kanban, timeline, tiles, matrix) with health and progress signals
-- Added expandable details to mission tiles and view preference handling
-- Added Docker build pipeline notes
-
-## Docker build result
-- Success (`docker build -t tally:test .`)
-
-## How to run locally
-1. `npm install`
-2. Create `.env.local` with Todoist OAuth + NextAuth credentials (see `README.md`)
-3. `npm run dev`
-
-Docker:
+**Build**
 - `docker build -t tally:test .`
-- `docker run -p 3000:3000 --env-file .env.local tally:test`
+
+**Notes**
+- Docker build succeeded; `npm ci` emitted deprecation warnings and reported 3 vulnerabilities.
+- Changes committed and pushed to `origin/main`.
