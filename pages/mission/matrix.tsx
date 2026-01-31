@@ -74,6 +74,13 @@ const MatrixView: NextPage = () => {
     }
   };
 
+  const sortIndicator = (key: SortKey) => {
+    if (key !== sortKey) {
+      return <span className="ml-2 text-[10px] text-warm-gray/60">↕</span>;
+    }
+    return <span className="ml-2 text-[10px] text-warm-peach">{direction === "asc" ? "↑" : "↓"}</span>;
+  };
+
   const formatDue = (project: MissionProject) => {
     if (project.overdueCount > 0) return "Overdue";
     if (!project.nextDue) return "—";
@@ -132,12 +139,84 @@ const MatrixView: NextPage = () => {
 
           <div className="rounded-2xl border border-warm-border overflow-hidden">
             <div className="grid grid-cols-[minmax(180px,2fr)_0.8fr_0.8fr_0.8fr_1fr_1fr] gap-3 bg-warm-card px-4 py-3 text-xs uppercase tracking-[0.2em] text-warm-gray">
-              <button className="text-left" onClick={() => handleSort("name")}>Project</button>
-              <button className="text-left" onClick={() => handleSort("tasks")}>Tasks</button>
-              <button className="text-left" onClick={() => handleSort("done")}>Done</button>
-              <button className="text-left" onClick={() => handleSort("overdue")}>Overdue</button>
-              <button className="text-left" onClick={() => handleSort("health")}>Health</button>
-              <button className="text-left" onClick={() => handleSort("due")}>Due</button>
+              <div
+                role="columnheader"
+                aria-sort={sortKey === "name" ? (direction === "asc" ? "ascending" : "descending") : "none"}
+              >
+                <button
+                  type="button"
+                  className="flex w-full items-center text-left transition hover:text-white"
+                  onClick={() => handleSort("name")}
+                >
+                  Project
+                  {sortIndicator("name")}
+                </button>
+              </div>
+              <div
+                role="columnheader"
+                aria-sort={sortKey === "tasks" ? (direction === "asc" ? "ascending" : "descending") : "none"}
+              >
+                <button
+                  type="button"
+                  className="flex w-full items-center text-left transition hover:text-white"
+                  onClick={() => handleSort("tasks")}
+                >
+                  Tasks
+                  {sortIndicator("tasks")}
+                </button>
+              </div>
+              <div
+                role="columnheader"
+                aria-sort={sortKey === "done" ? (direction === "asc" ? "ascending" : "descending") : "none"}
+              >
+                <button
+                  type="button"
+                  className="flex w-full items-center text-left transition hover:text-white"
+                  onClick={() => handleSort("done")}
+                >
+                  Done
+                  {sortIndicator("done")}
+                </button>
+              </div>
+              <div
+                role="columnheader"
+                aria-sort={sortKey === "overdue" ? (direction === "asc" ? "ascending" : "descending") : "none"}
+              >
+                <button
+                  type="button"
+                  className="flex w-full items-center text-left transition hover:text-white"
+                  onClick={() => handleSort("overdue")}
+                >
+                  Overdue
+                  {sortIndicator("overdue")}
+                </button>
+              </div>
+              <div
+                role="columnheader"
+                aria-sort={sortKey === "health" ? (direction === "asc" ? "ascending" : "descending") : "none"}
+              >
+                <button
+                  type="button"
+                  className="flex w-full items-center text-left transition hover:text-white"
+                  onClick={() => handleSort("health")}
+                >
+                  Health
+                  {sortIndicator("health")}
+                </button>
+              </div>
+              <div
+                role="columnheader"
+                aria-sort={sortKey === "due" ? (direction === "asc" ? "ascending" : "descending") : "none"}
+              >
+                <button
+                  type="button"
+                  className="flex w-full items-center text-left transition hover:text-white"
+                  onClick={() => handleSort("due")}
+                >
+                  Due
+                  {sortIndicator("due")}
+                </button>
+              </div>
             </div>
 
             {isLoading ? (
