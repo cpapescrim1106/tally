@@ -38,6 +38,7 @@ const MissionIndex: NextPage = () => {
   const { data: session, status } = useSession();
   const { projects, totals, isLoading } = useProjects();
   const [preferredView, setPreferredView] = useState<MissionView | null>(null);
+  const [selectedView, setSelectedView] = useState<MissionView>(views[0]?.key ?? "kanban");
 
   useEffect(() => {
     if (!session && status !== "loading") {
@@ -49,8 +50,17 @@ const MissionIndex: NextPage = () => {
     const stored = getMissionViewPreference();
     if (stored) {
       setPreferredView(stored);
+      setSelectedView(stored);
     }
   }, []);
+
+  const handleViewSwitch = (nextView: MissionView) => {
+    setSelectedView(nextView);
+    setPreferredView(nextView);
+    setMissionViewPreference(nextView);
+    const nextHref = views.find((view) => view.key === nextView)?.href ?? "/mission";
+    router.push(nextHref);
+  };
 
   const stats = useMemo(() => ([
     { label: "Projects", value: projects.length },
@@ -71,6 +81,29 @@ const MissionIndex: NextPage = () => {
             title="Choose a Mission View"
             description="Pick the visualization that fits how you plan and track projects."
           />
+
+          <div className="mb-8 rounded-2xl border border-warm-border bg-warm-card/80 px-4 py-4">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="text-xs uppercase tracking-[0.2em] text-warm-gray">View Switcher</p>
+                <p className="text-sm text-warm-gray mt-2">
+                  Jump directly into the Mission view you need most.
+                </p>
+              </div>
+              <select
+                aria-label="Select a Mission view"
+                value={selectedView}
+                onChange={(event) => handleViewSwitch(event.target.value as MissionView)}
+                className="rounded-full border border-warm-border bg-warm-card px-4 py-2 text-xs font-semibold text-white"
+              >
+                {views.map((view) => (
+                  <option key={view.key} value={view.key}>
+                    {view.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-10">
             {stats.map((stat) => (

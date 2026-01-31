@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
 import type { DefaultSession } from "next-auth";
 import { trackNavigation } from "@/utils/analytics";
-import { getMissionViewPreference } from "@/utils/missionPreferences";
 
 interface HeaderProps {
   user: DefaultSession["user"] | null;
@@ -12,22 +11,14 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ user }) => {
   const router = useRouter();
-  const [missionHref, setMissionHref] = useState("/mission");
   const handleSignOut = () => {
     trackNavigation('sign_out');
     signOut();
   };
 
-  useEffect(() => {
-    const preference = getMissionViewPreference();
-    if (preference) {
-      setMissionHref(`/mission/${preference}`);
-    }
-  }, [router.pathname]);
-
   const navItems = [
     { label: "Dashboard", href: "/" },
-    { label: "Mission Control", href: missionHref },
+    { label: "Mission Control", href: "/mission" },
     { label: "Recurring", href: "/recurring" },
     { label: "Legal", href: "/legal" },
   ];
