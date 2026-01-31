@@ -7,7 +7,6 @@ import {
   addWeeks,
   differenceInCalendarDays,
   format,
-  isAfter,
   isBefore,
   parseISO,
   startOfDay,
@@ -18,10 +17,19 @@ import {
 import Layout from "@/components/layout/Layout";
 import MissionHeader from "@/components/mission/MissionHeader";
 import { useProjects } from "@/hooks/useProjects";
+import type { MissionHealthStatus } from "@/types/mission";
 
 type ZoomLevel = "week" | "month" | "quarter";
 
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
+
+const statusBarStyles: Record<MissionHealthStatus, string> = {
+  healthy: "bg-emerald-400/80",
+  watch: "bg-amber-400/80",
+  critical: "bg-rose-500/80",
+  done: "bg-sky-400/80",
+  idle: "bg-zinc-500/80"
+};
 
 const TimelineView: NextPage = () => {
   const router = useRouter();
@@ -49,6 +57,23 @@ const TimelineView: NextPage = () => {
     0,
     100
   );
+
+  const timelineProjects = useMemo(() => (
+    [...projects]
+      .map((project) => ({
+        project,
+        earliest: project.earliestDue ? parseISO(project.earliestDue) : null,
+        latest: project.latestDue ? parseISO(project.latestDue) : null
+      }))
+      .sort((a, b) => {
+        if (a.earliest && b.earliest) {
+          return a.earliest.getTime() - b.earliest.getTime();
+        }
+        if (a.earliest) return -1;
+        if (b.earliest) return 1;
+        return a.project.name.localeCompare(b.project.name);
+      })
+  ), [projects]);
 
   const ticks = useMemo(() => {
     const result: Array<{ label: string; offset: number }> = [];
@@ -106,90 +131,79 @@ const TimelineView: NextPage = () => {
           )}
 
           <div className="rounded-2xl border border-warm-border bg-warm-card/80 p-6">
-            <div className="relative mb-8">
-              <div className="h-6" />
-              {ticks.map((tick) => (
-                <div
-                  key={tick.label}
-                  className="absolute top-0 text-xs text-warm-gray"
-                  style={{ left: `${tick.offset}%` }}
-                >
-                  {tick.label}
-                </div>
-              ))}
+            <div className="relative">
               <div
-                className="absolute top-0 h-full w-0.5 bg-white/40"
+                className="absolute inset-y-0 w-0.5 bg-white/40 z-10 pointer-events-none"
                 style={{ left: `${todayOffset}%` }}
-              />
-            </div>
+              >
+                <div className="absolute -top-6 -translate-x-1/2 text-[0.65rem] uppercase tracking-[0.2em] text-white/60">
+                  Today
+                </div>
+              </div>
 
-            {isLoading ? (
-              <div className="space-y-3">
-                {Array.from({ length: 6 }).map((_, index) => (
-                  <div key={index} className="h-8 rounded-xl bg-warm-border/40 animate-pulse" />
+              <div className="relative mb-8 h-6 z-20">
+                {ticks.map((tick) => (
+                  <div
+                    key={tick.label}
+                    className="absolute top-0 text-xs text-warm-gray"
+                    style={{ left: `${tick.offset}%` }}
+                  >
+                    {tick.label}
+                  </div>
                 ))}
               </div>
-            ) : (
-              <div className="space-y-4">
-                {projects.map((project) => {
-                  const earliest = project.earliestDue ? parseISO(project.earliestDue) : null;
-                  const latest = project.latestDue ? parseISO(project.latestDue) : null;
 
-                  if (!earliest || !latest) {
+              {isLoading ? (
+                <div className="space-y-3">
+                  {Array.from({ length: 6 }).map((_, index) => (
+                    <div key={index} className="h-8 rounded-xl bg-warm-border/40 animate-pulse" />
+                  ))}
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {timelineProjects.map(({ project, earliest, latest }) => {
+                    if (!earliest || !latest) {
+                      return (
+                        <div key={project.id} className="grid grid-cols-[200px_1fr] gap-4 items-center">
+                          <div className="text-sm text-white font-medium">{project.name}</div>
+                          <div className="text-xs text-warm-gray">No due dates</div>
+                        </div>
+                      );
+                    }
+
+                    const startOffset = clamp(
+                      (differenceInCalendarDays(earliest, range.start) / totalDays) * 100,
+                      0,
+                      100
+                    );
+                    const endOffset = clamp(
+                      (differenceInCalendarDays(latest, range.start) / totalDays) * 100,
+                      0,
+                      100
+                    );
+                    const width = Math.max(endOffset - startOffset, 1);
+                    const barClassName = statusBarStyles[project.healthStatus];
+
                     return (
                       <div key={project.id} className="grid grid-cols-[200px_1fr] gap-4 items-center">
-                        <div className="text-sm text-white font-medium">{project.name}</div>
-                        <div className="text-xs text-warm-gray">No due dates</div>
-                      </div>
-                    );
-                  }
-
-                  const startOffset = clamp(
-                    (differenceInCalendarDays(earliest, range.start) / totalDays) * 100,
-                    0,
-                    100
-                  );
-                  const endOffset = clamp(
-                    (differenceInCalendarDays(latest, range.start) / totalDays) * 100,
-                    0,
-                    100
-                  );
-                  const width = Math.max(endOffset - startOffset, 1);
-                  const overdue = isBefore(earliest, new Date());
-                  const overdueEnd = overdue ? (isAfter(latest, new Date()) ? new Date() : latest) : null;
-                  const overdueWidth = overdueEnd
-                    ? clamp(
-                        (differenceInCalendarDays(overdueEnd, range.start) / totalDays) * 100 - startOffset,
-                        0,
-                        width
-                      )
-                    : 0;
-
-                  return (
-                    <div key={project.id} className="grid grid-cols-[200px_1fr] gap-4 items-center">
-                      <div className="text-sm text-white font-medium">
-                        {project.name}
-                        <div className="text-xs text-warm-gray">
-                          {format(earliest, "MMM d")} → {format(latest, "MMM d")}
+                        <div className="text-sm text-white font-medium">
+                          {project.name}
+                          <div className="text-xs text-warm-gray">
+                            {format(earliest, "MMM d")} → {format(latest, "MMM d")}
+                          </div>
+                        </div>
+                        <div className="relative h-3 rounded-full bg-warm-border/70">
+                          <div
+                            className={`absolute h-3 rounded-full ${barClassName}`}
+                            style={{ left: `${startOffset}%`, width: `${width}%` }}
+                          />
                         </div>
                       </div>
-                      <div className="relative h-3 rounded-full bg-warm-border/70">
-                        <div
-                          className="absolute h-3 rounded-full bg-warm-peach"
-                          style={{ left: `${startOffset}%`, width: `${width}%` }}
-                        />
-                        {overdue && overdueWidth > 0 && (
-                          <div
-                            className="absolute h-3 rounded-full bg-rose-500"
-                            style={{ left: `${startOffset}%`, width: `${overdueWidth}%` }}
-                          />
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
+                    );
+                  })}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
