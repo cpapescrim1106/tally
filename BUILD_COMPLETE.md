@@ -1,11 +1,11 @@
-**Summary**
-- Updated package description and default metadata to the Tally tagline. `package.json:4` `components/layout/Layout.tsx:13`
-- Refreshed header/footer/dashboard and sign-in branding copy for Tally. `components/layout/Header.tsx:40` `components/layout/Footer.tsx:11` `components/Dashboard.tsx:203` `pages/sign-in.tsx:10`
-- Updated README + public metadata assets and refreshed build completion notes. `README.md:1` `README.md:121` `public/site.webmanifest:4` `public/og-image.svg:12` `BUILD_COMPLETE.md:1`
+**What I built**
+- Verified the Tally rebrand across package metadata, UI titles/meta, header/footer, and README.
+- Confirmed the Dockerfile supports production builds.
 
-**Build**
-- `docker build -t tally:test .`
+**Docker build result**
+- `docker build -t tally:test .` (success)
 
-**Notes**
-- Docker build succeeded; `npm ci` emitted deprecation warnings and reported 3 vulnerabilities.
-- Changes committed and pushed to `origin/main`.
+**How to run locally**
+- `npm install`
+- `npm run dev`
+- `docker run -p 3000:3000 --env-file .env.local tally:test`
