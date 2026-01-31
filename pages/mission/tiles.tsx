@@ -15,7 +15,7 @@ const TilesGridList = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTML
     <div
       ref={ref}
       style={style}
-      className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3"
+      className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3"
     >
       {children}
     </div>
@@ -113,7 +113,7 @@ const TilesView: NextPage = () => {
           )}
 
           {isLoading ? (
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
               {Array.from({ length: 6 }).map((_, index) => (
                 <div key={index} className="h-44 rounded-2xl border border-warm-border bg-warm-card animate-pulse" />
               ))}
