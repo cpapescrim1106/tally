@@ -10,32 +10,32 @@ export default async function handler(
   try {
     const token = await getToken({ req: request });
     if (!token) {
-      return response.status(401).json({ error: "Not authenticated" });
+      return response.status(401).json({ error: 'Not authenticated' });
     }
 
     if (!token.accessToken) {
-      return response.status(401).json({ error: "No access token found" });
+      return response.status(401).json({ error: 'No access token found' });
     }
 
     const accessToken = token.accessToken as string;
 
-    const getUserDetails = await fetchWithRetry(`https://api.todoist.com/sync/v9/user`, {
+    const getUserDetails = await fetchWithRetry('https://api.todoist.com/api/v1/user', {
       headers: {
-        Authorization: `Bearer ${accessToken}`,
+        Authorization: 'Bearer ' + accessToken,
       },
-      maxRetries: 3
+      maxRetries: 3,
     });
 
     if (!getUserDetails.ok) {
-      const errorData = await getUserDetails.json();
-      console.error("Error from Todoist API:", errorData);
-      return response.status(getUserDetails.status).json({ error: "Failed to fetch user details from Todoist" });
+      const errorData = await getUserDetails.text();
+      console.error('Error from Todoist API:', errorData);
+      return response.status(getUserDetails.status).json({ error: 'Failed to fetch user details from Todoist' });
     }
 
-    const userDetail = await getUserDetails.json() as TodoistUser;
+    const userDetail = (await getUserDetails.json()) as TodoistUser;
     response.status(200).json(userDetail);
   } catch (error) {
-    console.error("Error in getUser API:", error);
-    response.status(500).json({ error: "Internal server error" });
+    console.error('Error in getUser API:', error);
+    response.status(500).json({ error: 'Internal server error' });
   }
 }
