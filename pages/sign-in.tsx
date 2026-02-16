@@ -1,15 +1,14 @@
 import React from "react";
-import { signIn, useSession, getSession } from "next-auth/react";
+import { useSession, getSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import type { NextPage, GetServerSideProps } from 'next';
-import { FaChartLine, FaRegClock, FaProjectDiagram, FaCheckCircle } from 'react-icons/fa';
-import { BiTrendingUp } from 'react-icons/bi';
+import type { NextPage, GetServerSideProps } from "next";
+import { FaChartLine, FaRegClock, FaProjectDiagram, FaCheckCircle } from "react-icons/fa";
+import { BiTrendingUp } from "react-icons/bi";
 import Layout from "@/components/layout/Layout";
-import { trackNavigation } from "@/utils/analytics";
 
 export const metadata = {
   title: "Sign In | Tally",
-  description: "Sign in to Tally with your Todoist account"
+  description: "Sign in to Tally with your Todoist account",
 };
 
 const FeatureCard = ({ icon: Icon, title, description }: { icon: any; title: string; description: string }) => (
@@ -30,46 +29,24 @@ export const getServerSideProps: GetServerSideProps = async (context: any) => {
   if (session) {
     return {
       redirect: {
-        destination: '/',
+        destination: "/",
         permanent: false,
       },
     };
   }
 
-  return {
-    props: {},
-  };
+  return { props: {} };
 };
 
 const SignIn: NextPage = () => {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const router = useRouter();
   const { data: session } = useSession();
 
   React.useEffect(() => {
-    if (session) {
-      router.replace('/');
-      return;
-    }
-
-    if (router.query.error) {
-      console.error('Auth error:', router.query.error);
-      setIsLoading(false);
-    }
+    if (session) router.replace("/");
   }, [router, session]);
 
-  const handleSignIn = async (): Promise<void> => {
-    setIsLoading(true);
-    trackNavigation('sign_in');
-    try {
-      await signIn("todoist", {
-        callbackUrl: "/",
-      });
-    } catch (error) {
-      console.error('Sign in error:', error);
-      setIsLoading(false);
-    }
-  };
+  const authError = typeof router.query.error === "string" ? router.query.error : null;
 
   return (
     <Layout title={metadata.title} description={metadata.description}>
@@ -81,20 +58,23 @@ const SignIn: NextPage = () => {
               <p className="mt-2 text-sm text-warm-gray">Sign in to Tally with your Todoist account to continue</p>
             </div>
 
+            {authError && (
+              <p className="text-sm text-red-300 text-center">
+                Sign-in failed ({authError}). Please try again.
+              </p>
+            )}
+
             <button
-              onClick={() => !isLoading && handleSignIn()}
-              disabled={isLoading}
-              className="w-full flex justify-center items-center px-4 py-3 rounded-lg bg-[#e44332] text-sm font-medium text-white hover:bg-[#d13b2b] focus:outline-none focus:ring-2 focus:ring-[#e44332] focus:ring-offset-2 focus:ring-offset-gray-900 disabled:opacity-70 disabled:cursor-not-allowed transition-all duration-200"
+              type="button"
+              onClick={() => { window.location.href = "/api/auth/signin/todoist?callbackUrl=/"; }}
+              className="w-full flex justify-center items-center px-4 py-3 rounded-lg bg-[#e44332] text-sm font-medium text-white hover:bg-[#d13b2b] focus:outline-none focus:ring-2 focus:ring-[#e44332] focus:ring-offset-2 focus:ring-offset-gray-900 transition-all duration-200"
             >
-              {isLoading ? (
-                <div className="flex items-center">
-                  <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white mr-2"></div>
-                  Connecting...
-                </div>
-              ) : (
-                'Continue with Todoist'
-              )}
+              Continue with Todoist
             </button>
+
+            <p className="text-xs text-warm-gray text-center">
+              After the first approval, you should stay signed in on this device.
+            </p>
           </div>
         </div>
 
@@ -102,7 +82,9 @@ const SignIn: NextPage = () => {
           <div>
             <div className="mb-12">
               <h1 className="text-2xl font-bold text-white mb-3">Tally</h1>
-              <p className="text-warm-gray leading-relaxed">Tally is your Todoist command center with analytics, mission control views, and productivity insights built to keep you focused.</p>
+              <p className="text-warm-gray leading-relaxed">
+                Tally is your Todoist command center with analytics, mission control views, and productivity insights built to keep you focused.
+              </p>
             </div>
 
             <div className="space-y-3">
