@@ -1,5 +1,5 @@
 import React from "react";
-import { useSession, getSession } from "next-auth/react";
+import { useSession, getSession, signIn } from "next-auth/react";
 import { useRouter } from "next/router";
 import type { NextPage, GetServerSideProps } from "next";
 import { FaChartLine, FaRegClock, FaProjectDiagram, FaCheckCircle } from "react-icons/fa";
@@ -59,14 +59,14 @@ const SignIn: NextPage = () => {
             </div>
 
             {authError && (
-              <p className="text-sm text-red-300 text-center">
-                Sign-in failed ({authError}). Please try again.
-              </p>
+              <p className="text-sm text-red-300 text-center">Sign-in failed ({authError}). Please try again.</p>
             )}
 
             <button
               type="button"
-              onClick={() => { window.location.href = "/api/auth/signin/todoist?callbackUrl=/"; }}
+              onClick={() => {
+                void signIn("todoist", { callbackUrl: "/" });
+              }}
               className="w-full flex justify-center items-center px-4 py-3 rounded-lg bg-[#e44332] text-sm font-medium text-white hover:bg-[#d13b2b] focus:outline-none focus:ring-2 focus:ring-[#e44332] focus:ring-offset-2 focus:ring-offset-gray-900 transition-all duration-200"
             >
               Continue with Todoist
