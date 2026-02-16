@@ -24,11 +24,6 @@ export const authOptions: NextAuthOptions = {
     TodoistProvider({
       clientId: process.env.TODOIST_CLIENT_ID!,
       clientSecret: process.env.TODOIST_CLIENT_SECRET!,
-      authorization: {
-        params: {
-          scope: "data:read",
-        },
-      },
       userinfo: {
         async request({ tokens }) {
           const response = await fetch("https://api.todoist.com/api/v1/user", {
