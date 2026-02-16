@@ -4,19 +4,19 @@ import { JWT } from "next-auth/jwt";
 import { Session } from "next-auth";
 
 if (!process.env.NEXTAUTH_SECRET) {
-  throw new Error('NEXTAUTH_SECRET must be set in environment variables');
+  throw new Error("NEXTAUTH_SECRET must be set in environment variables");
 }
 
 if (!process.env.TODOIST_CLIENT_ID) {
-  throw new Error('TODOIST_CLIENT_ID must be set in environment variables');
+  throw new Error("TODOIST_CLIENT_ID must be set in environment variables");
 }
 
 if (!process.env.TODOIST_CLIENT_SECRET) {
-  throw new Error('TODOIST_CLIENT_SECRET must be set in environment variables');
+  throw new Error("TODOIST_CLIENT_SECRET must be set in environment variables");
 }
 
 if (!process.env.NEXTAUTH_URL) {
-  throw new Error('NEXTAUTH_URL must be set in environment variables');
+  throw new Error("NEXTAUTH_URL must be set in environment variables");
 }
 
 export const authOptions: NextAuthOptions = {
@@ -28,6 +28,30 @@ export const authOptions: NextAuthOptions = {
         params: {
           scope: "data:read",
         },
+      },
+      userinfo: {
+        async request({ tokens }) {
+          const response = await fetch("https://api.todoist.com/api/v1/user", {
+            headers: {
+              Authorization: 	tokens.access_token ? `Bearer ${tokens.access_token}` : "",
+            },
+          });
+
+          if (!response.ok) {
+            const body = await response.text();
+            throw new Error(`Todoist userinfo failed (${response.status}): ${body}`);
+          }
+
+          return response.json();
+        },
+      },
+      profile(profile: any) {
+        return {
+          id: String(profile.id),
+          email: profile.email,
+          name: profile.full_name ?? profile.name ?? profile.email,
+          image: profile.avatar_big ?? profile.avatar_medium ?? profile.avatar_s640 ?? null,
+        };
       },
     })
   ],
@@ -50,11 +74,11 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
-  debug: process.env.NODE_ENV === 'development',
+  debug: process.env.NODE_ENV === "development",
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: '/sign-in',
-    error: '/sign-in',
+    signIn: "/sign-in",
+    error: "/sign-in",
   },
 };
 
