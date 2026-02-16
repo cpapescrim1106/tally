@@ -25,15 +25,9 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.TODOIST_CLIENT_ID!,
       clientSecret: process.env.TODOIST_CLIENT_SECRET!,
       authorization: {
-        url: "https://todoist.com/oauth/authorize",
         params: {
           scope: "data:read",
-          response_type: "code",
-          redirect_uri: `${process.env.NEXTAUTH_URL}/api/auth/callback/todoist`,
         },
-      },
-      token: {
-        url: "https://todoist.com/oauth/access_token",
       },
     })
   ],
@@ -51,8 +45,8 @@ export const authOptions: NextAuthOptions = {
   debug: process.env.NODE_ENV === 'development',
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
-    signIn: '/',
-    error: '/',
+    signIn: '/sign-in',
+    error: '/sign-in',
   },
 };
 
