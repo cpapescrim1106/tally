@@ -26,7 +26,7 @@ const FeatureCard = ({ icon: Icon, title, description }: { icon: any; title: str
 
 export const getServerSideProps: GetServerSideProps = async (context: any) => {
   const session = await getSession(context);
-  
+
   if (session) {
     return {
       redirect: {
@@ -49,26 +49,22 @@ const SignIn: NextPage = () => {
   React.useEffect(() => {
     if (session) {
       router.replace('/');
-    } else if (router.query.error) {
+      return;
+    }
+
+    if (router.query.error) {
       console.error('Auth error:', router.query.error);
       setIsLoading(false);
-    } else if (router.query.code && !isLoading) {
-      handleSignIn();
     }
-  }, [router, session, isLoading]);
+  }, [router, session]);
 
   const handleSignIn = async (): Promise<void> => {
     setIsLoading(true);
     trackNavigation('sign_in');
     try {
-      const result = await signIn("todoist", {
-        redirect: false,
+      await signIn("todoist", {
         callbackUrl: "/",
       });
-      if (result?.error) {
-        // Handle sign-in error
-        setIsLoading(false);
-      }
     } catch (error) {
       console.error('Sign in error:', error);
       setIsLoading(false);
@@ -78,16 +74,11 @@ const SignIn: NextPage = () => {
   return (
     <Layout title={metadata.title} description={metadata.description}>
       <div className="container mx-auto max-h-fit flex flex-col md:flex-row mt-6 mb-12">
-        {/* Right side - Sign in */}
         <div className="w-full md:w-1/2 flex flex-col items-center justify-center p-12 bg-warm-card my-6 sm:my-0 sm:order-2 rounded-e-xl sm:border-s border-warm-border">
           <div className="w-full max-w-sm space-y-6">
             <div className="text-center">
-              <h2 className="text-2xl font-bold text-white">
-                Welcome Back
-              </h2>
-              <p className="mt-2 text-sm text-warm-gray">
-                Sign in to Tally with your Todoist account to continue
-              </p>
+              <h2 className="text-2xl font-bold text-white">Welcome Back</h2>
+              <p className="mt-2 text-sm text-warm-gray">Sign in to Tally with your Todoist account to continue</p>
             </div>
 
             <button
@@ -107,44 +98,19 @@ const SignIn: NextPage = () => {
           </div>
         </div>
 
-        {/* Left side - Features */}
         <div className="w-full md:w-1/2 bg-warm-card p-12 flex-col justify-between">
           <div>
             <div className="mb-12">
-              <h1 className="text-2xl font-bold text-white mb-3">
-                Tally
-              </h1>
-              <p className="text-warm-gray leading-relaxed">
-                Tally is your Todoist command center with analytics, mission control views, and productivity insights built to keep you focused.
-              </p>
+              <h1 className="text-2xl font-bold text-white mb-3">Tally</h1>
+              <p className="text-warm-gray leading-relaxed">Tally is your Todoist command center with analytics, mission control views, and productivity insights built to keep you focused.</p>
             </div>
 
             <div className="space-y-3">
-              <FeatureCard
-                icon={FaChartLine}
-                title="Task Analytics"
-                description="Visualize completion patterns and track your progress over time with beautiful, interactive charts"
-              />
-              <FeatureCard
-                icon={BiTrendingUp}
-                title="Productivity Scoring"
-                description="Get personalized daily scores based on your task completion and work habits"
-              />
-              <FeatureCard
-                icon={FaRegClock}
-                title="Time Insights"
-                description="Discover your peak productivity hours and optimize your daily schedule for maximum efficiency"
-              />
-              <FeatureCard
-                icon={FaProjectDiagram}
-                title="Project Distribution"
-                description="Understand how your time and effort are distributed across different projects and areas"
-              />
-              <FeatureCard
-                icon={FaCheckCircle}
-                title="Recurring Tasks"
-                description="Track completion rates, trends, and streaks of your recurring tasks and habits"
-              />
+              <FeatureCard icon={FaChartLine} title="Task Analytics" description="Visualize completion patterns and track your progress over time with beautiful, interactive charts" />
+              <FeatureCard icon={BiTrendingUp} title="Productivity Scoring" description="Get personalized daily scores based on your task completion and work habits" />
+              <FeatureCard icon={FaRegClock} title="Time Insights" description="Discover your peak productivity hours and optimize your daily schedule for maximum efficiency" />
+              <FeatureCard icon={FaProjectDiagram} title="Project Distribution" description="Understand how your time and effort are distributed across different projects and areas" />
+              <FeatureCard icon={FaCheckCircle} title="Recurring Tasks" description="Track completion rates, trends, and streaks of your recurring tasks and habits" />
             </div>
           </div>
         </div>
